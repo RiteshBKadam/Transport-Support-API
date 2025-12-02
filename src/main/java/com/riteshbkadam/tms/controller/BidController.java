@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin()
-
-public class TransportController {
+@RequestMapping("/bid")
+public class BidController {
 
     @RequestMapping("/")
     public String home(){
