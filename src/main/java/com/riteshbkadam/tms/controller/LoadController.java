@@ -12,15 +12,31 @@ import java.util.UUID;
 @RequestMapping("/load")
 public class LoadController {
     private final LoadService service;
-    public LoadController(LoadService service) { this.service = service; }
+    public LoadController(LoadService service) {
+        this.service = service;
+    }
     @PostMapping
-    public LoadResponse createLoad(@RequestBody CreateLoadRequest req) { return service.createLoad(req); }
+    public LoadResponse createLoad(@RequestBody CreateLoadRequest req) {
+        return service.createLoad(req);
+    }
+
     @GetMapping
-    public Page<LoadResponse> getLoads(@RequestParam(required = false) String shipperId, @RequestParam(required = false) LoadStatus status, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) { return service.getLoads(shipperId, status, page, size); }
+    public Page<LoadResponse> getLoads(@RequestParam(required = false) String shipperId,
+                                       @RequestParam(required = false) LoadStatus status,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size) {
+        return service.getLoads(shipperId, status, page, size);
+    }
     @GetMapping("/{loadId}")
-    public LoadDetailsResponse getLoad(@PathVariable UUID loadId) { return service.getLoadWithBids(loadId); }
+    public LoadDetailsResponse getLoad(@PathVariable UUID loadId) {
+        return service.getLoadWithBids(loadId);
+    }
     @PatchMapping("/{loadId}/cancel")
-    public String cancelLoad(@PathVariable UUID loadId) { return service.cancelLoad(loadId); }
+    public String cancelLoad(@PathVariable UUID loadId) {
+        return service.cancelLoad(loadId);
+    }
     @GetMapping("/{loadId}/best-bids")
-    public List<BidResponse> bestBids(@PathVariable UUID loadId) { return service.getBestBids(loadId); }
+    public List<BidResponse> bestBids(@PathVariable UUID loadId) {
+        return service.getBestBids(loadId);
+    }
 }

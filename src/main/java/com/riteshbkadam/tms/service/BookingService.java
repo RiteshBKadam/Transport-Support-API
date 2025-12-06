@@ -35,11 +35,17 @@ public class BookingService {
     }
     @Transactional
     public BookingResponse createBooking(CreateBookingRequest req) {
-        Bid b = bidRepo.findById(req.getBidId()).orElseThrow(() -> new ResourceNotFoundException("Bid not found"));
+        Bid b = bidRepo.findById(req.getBidId()).orElseThrow(() -> {
+            return new ResourceNotFoundException("Bid not found");
+        });
         if (b.getStatus() != BidStatus.PENDING) throw new InvalidStatusTransitionException("Bid not pending");
         Load l = loadRepo.findById(b.getLoadId()).orElseThrow(() -> new ResourceNotFoundException("Load not found"));
         Transporter t = transporterRepo.findById(b.getTransporterId()).orElseThrow(() -> new ResourceNotFoundException("Transporter not found"));
-        int avail = t.getAvailableTrucks().stream().filter(a -> a.getTruckType().equals(l.getTruckType())).mapToInt(AvailableTrucks::getCount).sum();
+        int avail = t.getAvailableTrucks()
+                .stream()
+                .filter(a -> a.getTruckType().equals(l.getTruckType()))
+                .mapToInt(AvailableTrucks::getCount)
+                .sum();
         if (b.getTrucksOffered() > avail) throw new InsufficientCapacityException("Insufficient trucks");
         try {
             t.getAvailableTrucks().forEach(at -> { if (at.getTruckType().equals(l.getTruckType())) at.setCount(at.getCount() - b.getTrucksOffered()); });
@@ -79,14 +85,24 @@ public class BookingService {
         bookingRepo.save(b);
         Transporter t = transporterRepo.findById(b.getTransporterId()).orElseThrow(() -> new ResourceNotFoundException("Transporter not found"));
         Load l = loadRepo.findById(b.getLoadId()).orElseThrow(() -> new ResourceNotFoundException("Load not found"));
-        t.getAvailableTrucks().forEach(at -> { if (at.getTruckType().equals(l.getTruckType())) at.setCount(at.getCount() + b.getAllocatedTrucks()); });
+        t.getAvailableTrucks().forEach(at -> {
+            if (at.getTruckType().equals(l.getTruckType()))
+                at.setCount(at.getCount() + b.getAllocatedTrucks());
+        });
         transporterRepo.save(t);
-        int sumAllocated = bookingRepo.findAll().stream().filter(x -> x.getLoadId().equals(l.getLoadId()) && x.getStatus() == BookingStatus.CONFIRMED).mapToInt(Booking::getAllocatedTrucks).sum();
+        int sumAllocated = bookingRepo
+                .findAll()
+                .stream()
+                .filter(x -> x.getLoadId().equals(l.getLoadId()) && x.getStatus() == BookingStatus.CONFIRMED)
+                .mapToInt(Booking::getAllocatedTrucks)
+                .sum();
         if (sumAllocated == 0 && l.getStatus() == LoadStatus.BOOKED) l.setStatus(LoadStatus.OPEN_FOR_BIDS);
         loadRepo.save(l);
         return "Booking cancelled";
     }
     private BookingResponse toBookingResponse(Booking b) {
-        return new BookingResponse(b.getBookingId(), b.getLoadId(), b.getBidId(), b.getTransporterId(), b.getAllocatedTrucks(), b.getFinalRate(), b.getStatus().name(), b.getBookedAt());
+        return new BookingResponse(b.getBookingId(), b.getLoadId(), b.getBidId(),
+                b.getTransporterId(), b.getAllocatedTrucks(), b.getFinalRate(),
+                b.getStatus().name(), b.getBookedAt());
     }
 }

@@ -64,6 +64,12 @@ public class BidService {
         return "Bid rejected";
     }
     private BidResponse toBidResponse(Bid b) {
-        return new BidResponse(b.getBidId(), b.getLoadId(), b.getTransporterId(), b.getProposedRate(), b.getTrucksOffered(), b.getStatus().name(), b.getSubmittedAt());
+        return new BidResponse(b.getBidId(),
+                b.getLoadId(),
+                b.getTransporterId(),
+                b.getProposedRate(),
+                b.getTrucksOffered(),
+                b.getStatus().name(),
+                b.getSubmittedAt());
     }
 }

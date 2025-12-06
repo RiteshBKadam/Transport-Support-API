@@ -10,11 +10,19 @@ import java.util.UUID;
 @RequestMapping("/transporter")
 public class TransporterController {
     private final TransporterService service;
-    public TransporterController(TransporterService service) { this.service = service; }
+    public TransporterController(TransporterService service) {
+        this.service = service;
+    }
     @PostMapping
-    public TransporterResponse createTransporter(@RequestBody CreateTransporterRequest req) { return service.createTransporter(req); }
+    public TransporterResponse createTransporter(@RequestBody CreateTransporterRequest req) {
+        return service.createTransporter(req);
+    }
     @GetMapping("/{id}")
-    public TransporterResponse getTransporter(@PathVariable UUID id) { return service.getTransporter(id); }
+    public TransporterResponse getTransporter(@PathVariable UUID id) {
+        return service.getTransporter(id);
+    }
     @PutMapping("/{id}/trucks")
-    public String updateTrucks(@PathVariable UUID id, @RequestBody UpdateTrucksRequest req) { return service.updateTrucks(id, req); }
+    public String updateTrucks(@PathVariable UUID id,
+                               @RequestBody UpdateTrucksRequest req) {
+        return service.updateTrucks(id, req); }
 }

@@ -9,11 +9,19 @@ import java.util.UUID;
 @RequestMapping("/booking")
 public class BookingController {
     private final BookingService service;
-    public BookingController(BookingService service) { this.service = service; }
+    public BookingController(BookingService service) {
+        this.service = service;
+    }
     @PostMapping
-    public BookingResponse createBooking(@RequestBody CreateBookingRequest req) { return service.createBooking(req); }
+    public BookingResponse createBooking(@RequestBody CreateBookingRequest req) {
+        return service.createBooking(req);
+    }
     @GetMapping("/{bookingId}")
-    public BookingResponse getBooking(@PathVariable UUID bookingId) { return service.getBooking(bookingId); }
+    public BookingResponse getBooking(@PathVariable UUID bookingId) {
+        return service.getBooking(bookingId);
+    }
     @PatchMapping("/{bookingId}/cancel")
-    public String cancelBooking(@PathVariable UUID bookingId) { return service.cancelBooking(bookingId); }
+    public String cancelBooking(@PathVariable UUID bookingId) {
+        return service.cancelBooking(bookingId);
+    }
 }

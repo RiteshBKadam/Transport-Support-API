@@ -22,21 +22,34 @@ public class TransporterService {
         t.setRating(req.getRating());
         if (req.getAvailableTrucks() != null) {
             List<AvailableTrucks> list = req.getAvailableTrucks().stream()
-                    .map(r -> new AvailableTrucks(r.getTruckType(), r.getCount()))
+                    .map(r -> new AvailableTrucks(
+                            r.getTruckType(),
+                            r.getCount()))
                     .collect(Collectors.toList());
             t.setAvailableTrucks(list);
         }
         Transporter saved = repo.save(t);
-        return new TransporterResponse(saved.getTransporterId(), saved.getCompanyName(), saved.getRating());
+        return new TransporterResponse(
+                saved.getTransporterId(),
+                saved.getCompanyName(),
+                saved.getRating()
+        );
     }
     public TransporterResponse getTransporter(UUID id) {
         Transporter t = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Transporter not found"));
-        return new TransporterResponse(t.getTransporterId(), t.getCompanyName(), t.getRating());
+        return new TransporterResponse(t.getTransporterId(),
+                t.getCompanyName(),
+                t.getRating());
     }
     @Transactional
     public String updateTrucks(UUID id, UpdateTrucksRequest req) {
         Transporter t = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Transporter not found"));
-        List<AvailableTrucks> list = req.availableTrucks().stream().map(r -> new AvailableTrucks(r.getTruckType(), r.getCount())).collect(Collectors.toList());
+        List<AvailableTrucks> list = req.availableTrucks()
+                .stream()
+                .map(r -> new AvailableTrucks(
+                        r.getTruckType(),
+                        r.getCount()))
+                .collect(Collectors.toList());
         t.setAvailableTrucks(list);
         repo.save(t);
         return "Updated";

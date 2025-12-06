@@ -53,7 +53,19 @@ public class LoadService {
         Load l = repo.findById(loadId).orElseThrow(() -> new ResourceNotFoundException("Load not found"));
         List<Bid> bids = bidRepo.findByLoadId(loadId);
         List<BidResponse> br = bids.stream().map(this::toBidResponse).collect(Collectors.toList());
-        return new LoadDetailsResponse(l.getLoadId(), l.getShipperId(), l.getLoadingCity(), l.getUnloadingCity(), l.getProductType(), l.getWeight(), l.getWeightUnit(), l.getLoadingDate(), l.getTruckType(), l.getNoOfTrucks(), l.getStatus().name(), l.getDatePosted(), br);
+        return new LoadDetailsResponse(
+                l.getLoadId(),
+                l.getShipperId(),
+                l.getLoadingCity(),
+                l.getUnloadingCity(),
+                l.getProductType(),
+                l.getWeight(),
+                l.getWeightUnit(),
+                l.getLoadingDate(),
+                l.getTruckType(),
+                l.getNoOfTrucks(),
+                l.getStatus().name(),
+                l.getDatePosted(), br);
     }
     @Transactional
     public String cancelLoad(UUID loadId) {
@@ -66,7 +78,10 @@ public class LoadService {
     public List<BidResponse> getBestBids(UUID loadId) {
         Load l = repo.findById(loadId).orElseThrow(() -> new ResourceNotFoundException("Load not found"));
         List<Bid> bids = bidRepo.findByLoadIdAndStatus(loadId, com.riteshbkadam.tms.utils.status.BidStatus.PENDING);
-        List<BidResponse> responses = bids.stream().map(this::toBidResponse).collect(Collectors.toList());
+        List<BidResponse> responses = bids
+                .stream()
+                .map(this::toBidResponse)
+                .collect(Collectors.toList());
         responses.sort((a,b) -> Double.compare(score(b), score(a)));
         return responses;
     }
@@ -76,7 +91,18 @@ public class LoadService {
         return rateScore * 0.7 + (rating / 5.0) * 0.3;
     }
     private LoadResponse toResponse(Load l) {
-        return new LoadResponse(l.getLoadId(), l.getShipperId(), l.getLoadingCity(), l.getUnloadingCity(), l.getProductType(), l.getWeight(), l.getWeightUnit(), l.getLoadingDate(), l.getTruckType(), l.getNoOfTrucks(), l.getStatus().name(), l.getDatePosted());
+        return new LoadResponse(l.getLoadId(),
+                l.getShipperId(),
+                l.getLoadingCity(),
+                l.getUnloadingCity(),
+                l.getProductType(),
+                l.getWeight(),
+                l.getWeightUnit(),
+                l.getLoadingDate(),
+                l.getTruckType(),
+                l.getNoOfTrucks(),
+                l.getStatus().name(),
+                l.getDatePosted());
     }
     private BidResponse toBidResponse(Bid b) {
         return new BidResponse(b.getBidId(), b.getLoadId(), b.getTransporterId(), b.getProposedRate(), b.getTrucksOffered(), b.getStatus().name(), b.getSubmittedAt());
