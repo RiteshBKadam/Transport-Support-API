@@ -17,10 +17,40 @@ The system supports load posting, bidding by transporters, automated best-bid su
 - **Maven**
 - **Postman (for API testing)**
 
+
 ---
 
-## 📊 Database Schema Diagram
+## ⚙️ Setup Instructions
 
-> Your schema diagram image should be added in the `/docs` folder.  
-> Below is the placeholder to insert the image later.
+### 1️⃣ Clone Repository
 
+```bash
+git clone https://github.com/your-username/tms-backend.git
+cd tms-backend
+
+
+```
+### 2️⃣ Configure PostgreSQL
+```bash
+CREATE DATABASE tms;
+```
+### 3️⃣ Configure application.properties
+```bash
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/tms
+spring.datasource.username=postgres
+spring.datasource.password=your_password
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+```
+
+### 📮 API Documentation
+🔹 Postman Collection
+```bash
+Import the file:
+
+postman/TMS_Postman_Collection.json
+
+```

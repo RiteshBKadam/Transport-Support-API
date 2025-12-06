@@ -1,0 +1,242 @@
+{
+  "info": {
+    "name": "Transport Management System - TMS",
+    "_postman_id": "a1d9c8f2-9b58-4b22-9c92-f7c999999999",
+    "description": "Postman Collection for Load, Transporter, Bid, Booking APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+
+    {
+      "name": " Create Transporter",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:8080/transporter", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["transporter"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"companyName\": \"Ritesh Logistics\",\n  \"rating\": 4.7,\n  \"availableTrucks\": [\n    { \"truckType\": \"Open\", \"count\": 10 },\n    { \"truckType\": \"Container\", \"count\": 5 }\n  ]\n}"
+        }
+      }
+    },
+
+    {
+      "name": " Get Transporter by ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/transporter/{{transporterId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["transporter", "{{transporterId}}"]
+        }
+      }
+    },
+
+    {
+      "name": " Update Transporter Trucks",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:8080/transporter/{{transporterId}}/trucks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["transporter", "{{transporterId}}", "trucks"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"availableTrucks\": [\n    { \"truckType\": \"Open\", \"count\": 8 },\n    { \"truckType\": \"Container\", \"count\": 5 }\n  ]\n}"
+        }
+      }
+    },
+
+
+    {
+      "name": "Create Load",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:8080/load", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["load"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"shipperId\": \"SHIPPER123\",\n  \"loadingCity\": \"Mumbai\",\n  \"unloadingCity\": \"Pune\",\n  \"loadingDate\": \"2025-12-20T10:00:00\",\n  \"productType\": \"Steel Sheet\",\n  \"weight\": 15000,\n  \"weightUnit\": \"KG\",\n  \"truckType\": \"Open\",\n  \"noOfTrucks\": 3\n}"
+        }
+      }
+    },
+
+    {
+      "name": "Get Loads (Filters + Pagination)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/load?shipperId=SHIPPER123&status=POSTED&page=0&size=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["load"],
+          "query": [
+            { "key": "shipperId", "value": "SHIPPER123" },
+            { "key": "status", "value": "POSTED" },
+            { "key": "page", "value": "0" },
+            { "key": "size", "value": "10" }
+          ]
+        }
+      }
+    },
+
+    {
+      "name": " Get Load With Bids",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/load/{{loadId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["load", "{{loadId}}"]
+        }
+      }
+    },
+
+    {
+      "name": " Cancel Load",
+      "request": {
+        "method": "PATCH",
+        "url": {
+          "raw": "http://localhost:8080/load/{{loadId}}/cancel",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["load", "{{loadId}}", "cancel"]
+        }
+      }
+    },
+
+    {
+      "name": " Get Best Bids for Load",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/load/{{loadId}}/best-bids",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["load", "{{loadId}}", "best-bids"]
+        }
+      }
+    },
+
+
+    {
+      "name": "Create Bid",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:8080/bid", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["bid"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"loadId\": \"{{loadId}}\",\n  \"transporterId\": \"{{transporterId}}\",\n  \"proposedRate\": 3000,\n  \"trucksOffered\": 2\n}"
+        }
+      }
+    },
+
+    {
+      "name": "Get Bids (Filters)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/bid?loadId={{loadId}}&transporterId={{transporterId}}&status=PENDING",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["bid"],
+          "query": [
+            { "key": "loadId", "value": "{{loadId}}" },
+            { "key": "transporterId", "value": "{{transporterId}}" },
+            { "key": "status", "value": "PENDING" }
+          ]
+        }
+      }
+    },
+
+    {
+      "name": " Get Bid by ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/bid/{{bidId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["bid", "{{bidId}}"]
+        }
+      }
+    },
+
+    {
+      "name": " Reject Bid",
+      "request": {
+        "method": "PATCH",
+        "url": {
+          "raw": "http://localhost:8080/bid/{{bidId}}/reject",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["bid", "{{bidId}}", "reject"]
+        }
+      }
+    },
+
+
+    {
+      "name": " Create Booking (Accept Bid)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:8080/booking", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["booking"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bidId\": \"{{bidId}}\"\n}"
+        }
+      }
+    },
+
+    {
+      "name": "Get Booking Details",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/booking/{{bookingId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["booking", "{{bookingId}}"]
+        }
+      }
+    },
+
+    {
+      "name": "Cancel Booking",
+      "request": {
+        "method": "PATCH",
+        "url": {
+          "raw": "http://localhost:8080/booking/{{bookingId}}/cancel",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["booking", "{{bookingId}}", "cancel"]
+        }
+      }
+    }
+
+  ],
+  "variable": [
+    { "key": "loadId", "value": "" },
+    { "key": "bidId", "value": "" },
+    { "key": "bookingId", "value": "" },
+    { "key": "transporterId", "value": "" }
+  ]
+}
