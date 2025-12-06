@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,9 +22,10 @@ public class Transporter {
     private double rating;
     @ElementCollection
     @CollectionTable(
-            name ="transporter_available_trucks",
+            name = "transporter_available_trucks",
             joinColumns = @JoinColumn(name = "transporter_id")
     )
     private List<AvailableTrucks> availableTrucks = new ArrayList<>();
+
 
 }

@@ -8,8 +8,9 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransporterResponse {
+public class CreateBidRequest {
+    private UUID loadId;
     private UUID transporterId;
-    private String companyName;
-    private double rating;
+    private double proposedRate;
+    private int trucksOffered;
 }

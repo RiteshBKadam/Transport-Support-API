@@ -8,8 +8,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransporterResponse {
-    private UUID transporterId;
-    private String companyName;
-    private double rating;
+public class CreateBookingRequest {
+    private UUID bidId;
 }
